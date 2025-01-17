@@ -29,8 +29,6 @@ RUN apt-get update \
     && apt-get install -y ca-certificates tzdata sqlite3 libc6 \
     && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 8080
-
 ENV TZ=Etc/UTC \
     APP_USER=appuser
 
@@ -51,4 +49,11 @@ WORKDIR ${APP}
 ENV RUST_LOG=info,nostr_rs_relay=info
 ENV APP_DATA=${APP_DATA}
 
-CMD ./nostr-rs-relay --db ${APP_DATA}
+# Define the port environment variable for dynamic assignment (default to 8080 if not provided)
+ENV PORT=8080
+
+# Expose the port (for documentation purposes only)
+EXPOSE $PORT
+
+# Define the default command to run the application, using the dynamically assigned port
+CMD ["sh", "-c", "./nostr-rs-relay --db ${APP_DATA} --bind 0.0.0.0:$PORT"]
