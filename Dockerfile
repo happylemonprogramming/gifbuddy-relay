@@ -55,5 +55,4 @@ ENV PORT=8080
 # Expose the port (for documentation purposes only)
 EXPOSE $PORT
 
-# Define the default command to run the application, using the dynamically assigned port
-CMD ["sh", "-c", "./nostr-rs-relay --db ${APP_DATA} --bind 0.0.0.0:$PORT"]
+CMD ./nostr-rs-relay --db ${APP_DATA}
