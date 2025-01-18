@@ -50,7 +50,7 @@ ENV RUST_LOG=info,nostr_rs_relay=info
 ENV APP_DATA=${APP_DATA}
 
 # Define the port environment variable for dynamic assignment (default to 8080 if not provided)
-ENV PORT=8080
+# ENV PORT=8080
 
 # Expose the port (for documentation purposes only)
 EXPOSE $PORT
