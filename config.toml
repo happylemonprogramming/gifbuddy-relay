@@ -88,7 +88,7 @@ data_directory = "/usr/src/app/db"
 address = "0.0.0.0"
 
 # Listen on this port
-port = 8080
+port = "${PORT:8080}"  # With default value
 
 # If present, read this HTTP header for logging client IP addresses.
 # Examples for common proxies, cloudflare:
