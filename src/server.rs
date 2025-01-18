@@ -780,17 +780,29 @@ fn file_bytes(path: &str) -> Result<Vec<u8>> {
 }
 
 /// Start running a Nostr relay server.
+// pub fn start_server(settings: &Settings, shutdown_rx: MpscReceiver<()>) -> Result<(), Error> {
+//     trace!("Config: {:?}", settings);
+//     // do some config validation.
+//     if !Path::new(&settings.database.data_directory).is_dir() {
+//         error!("Database directory does not exist");
+//         return Err(Error::DatabaseDirError);
+//     }
+//     let addr = format!(
+//         "{}:{}",
+//         settings.network.address.trim(),
+//         settings.network.port
+//     );
 pub fn start_server(settings: &Settings, shutdown_rx: MpscReceiver<()>) -> Result<(), Error> {
-    trace!("Config: {:?}", settings);
-    // do some config validation.
-    if !Path::new(&settings.database.data_directory).is_dir() {
-        error!("Database directory does not exist");
-        return Err(Error::DatabaseDirError);
-    }
+    // Get port from environment or fall back to config
+    let port = std::env::var("PORT")
+        .ok()
+        .and_then(|p| p.parse().ok())
+        .unwrap_or(settings.network.port);
+
     let addr = format!(
         "{}:{}",
         settings.network.address.trim(),
-        settings.network.port
+        port  // Use the environment-aware port here
     );
     let socket_addr = addr.parse().expect("listening address not valid");
     // address whitelisting settings
